@@ -18,7 +18,7 @@ Usage:
     $(basename "${0}") [<options>] arg1 arg2
 
 Description:
-    arg1: instance name
+    arg1: instance name which you want to connect
     arg2: aws profile name
 
 Options:
