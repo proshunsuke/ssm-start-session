@@ -2,9 +2,10 @@
 
 main() {
   name=$1
-  profile=$2
+  domain=$2
+  profile=$3
 
-  instance_info_json=$(aws ec2 describe-instances --filter "Name=tag:Name,Values=$name" --output json --profile "$profile")
+  instance_info_json=$(aws ec2 describe-instances --filter "Name=tag:Name,Values=$name" "Name=tag:Domain,Values=$domain" --output json --profile "$profile")
   instance_id=$(echo "$instance_info_json" | jq -r '.Reservations[] | .Instances[] | .InstanceId')
 
   aws ssm start-session --target "$instance_id" --profile "$profile"
@@ -15,11 +16,12 @@ usage() {
 $(basename "${0}") is a tool for ...
 
 Usage:
-    $(basename "${0}") [<options>] arg1 arg2
+    $(basename "${0}") [<options>] arg1 arg2 arg3
 
 Description:
     arg1: instance name which you want to connect
-    arg2: aws profile name
+    arg2: instance domain which you want to connect
+    arg3: aws profile name
 
 Options:
     --version, -v     print $(basename "${0}") version
@@ -43,7 +45,7 @@ do
       version
       ;;
     *)
-      main "$1" "$2"
+      main "$1" "$2" "$3"
       break
       ;;
   esac
