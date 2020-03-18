@@ -5,7 +5,13 @@ main() {
   domain=$2
   profile=$3
 
-  instance_info_json=$(aws ec2 describe-instances --filter "Name=tag:Name,Values=$name" "Name=tag:Domain,Values=$domain" --output json --profile "$profile")
+  if [ -n "$domain" ]; then
+    domain_option="Name=tag:Domain,Values=$domain"
+  else
+    domain_option=""
+  fi
+
+  instance_info_json=$(aws ec2 describe-instances --filter "Name=tag:Name,Values=$name" $domain_option --output json --profile "$profile")
   instance_id=$(echo "$instance_info_json" | jq -r '.Reservations[] | .Instances[] | .InstanceId')
 
   aws ssm start-session --target "$instance_id" --profile "$profile"
