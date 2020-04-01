@@ -12,8 +12,8 @@ cd ssm-start-session
 make
 ```
 
-接続したいインスタンスのTagsに `Name=instance_name` 追加されていて、aws profileが `your_provile_name` として定義されている状態で、以下のように実行することでセッションマネージャーを実行します
+接続したいインスタンスのTagsに `Name=instance_name` と `Domain=domain_name` が追加されていて、  aws profileが `your_provile_name` として定義されている状態で、以下のように実行することでセッションマネージャーを実行します
 
 ```bash
-ssm-start-session instance_name your_provile_name
+ssm-start-session instance_name domain_name your_provile_name
 ```
